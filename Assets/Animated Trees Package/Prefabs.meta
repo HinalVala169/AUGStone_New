@@ -1,8 +1,22 @@
-fileFormatVersion: 2
-guid: e58c092a358e48c43be7243dcb27d497
-folderAsset: yes
-DefaultImporter:
-  externalObjects: {}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
+
+public class PulseEffectWithFade : MonoBehaviour
+{
+    [SerializeField] private float scaleUpSize = 1.2f;
+    [SerializeField] private float animationDuration = 0.3f;
+    [SerializeField] private float delay = 0.3f;
+    [SerializeField] private Image targetImage; // Reference to the Image component
+
+    void Start()
+    {
+        DOTween.Sequence()
+            .Append(transform.DOScale(Vector2.one * scaleUpSize, animationDuration))
+            .Join(targetImage.DOFade(0.5f, animationDuration)) // Fade to half opacity
+            .Append(transform.DOScale(Vector2.one, animationDuration))
+            .Join(targetImage.DOFade(1f, animationDuration)) // Fade back to full opacity
+            .SetDelay(delay)
+            .SetLoops(-1, LoopType.Restart);
+    }
+}
